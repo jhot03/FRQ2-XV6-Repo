@@ -1,6 +1,50 @@
-FRQ REPO NAME: 
+FRQ REPO NAME: FRQ2-XV6-Repo
 
-LINK: 
+LINK: https://github.com/jhot03/FRQ2-XV6-Repo
 
 Questions: 
+
+PART 1
+
+Effect of parent process calling wait() two times: 
+- The effect is that we wait for the children to finish before the parent continues. This is why 
+the parent is printing cleanly. 
+
+Do you always get the same order of execution: 
+- No it is different because OS schedules tasks as it pleases as a result we get interrupting and differing order. 
+- No, either child can run first depending on the scheduler. 
+
+Adding sleep(5):
+- The child 2 is usually printing before child 1 and we often see parent waiting while child 1 is sleeping (often interrupted but is reached).
+- We can not guarantee this is due to the delay that we have placed on the child putting it to sleep 
+
+PART 3:
+
+Seeing what the system calls do.... why not just have these operations as functions in ulib.c... like spinlock
+
+- We need to manipulate the process state by putting to sleep and also calling sched this is why we can not have 
+it like we have the spinlock these are kernel level. The user code can't interact with this level so it must be
+inside of the current file structure instead of the ulib for proper access with current implementation.
+
+
+PART 4:
+
+Does child 1 always execute before child 2? 
+- Yes it is not usually executing before child 2 however there is deadlock and we are missing the signal
+to wake up so the program is hanging indefinitely as we wait for child 2 to wake up. 
+
+
+PART 5:
+
+Is it always the case that Child 1 executes before child 2? 
+- Yes it is always the case that child 1 executes because we do not proceed with child 2 until we have 
+written to the file which is signaled by child 1. This means that it must complete before child 2
+executes.
+
+Do you observe deadlocks?
+- No there are not any more deadlocks given the conditional flag that we are setting in the file which 
+allows the child 2 to assert that it can execute. 
+
+
+
 
